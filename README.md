@@ -51,6 +51,17 @@ make setup                  # создаёт личные файлы настр�
 | `ansible/inventory/group_vars/all/local.yml` | имя пользователя, **публичный** SSH-ключ, нужен ли свой DNS, домен для клиентов ([зачем](docs/ru/04-amneziawg-wgdashboard.md#адрес-сервера-в-конфигах-домен-а-не-ip)) |
 | `ansible/inventory/group_vars/all/vault.yml` | хеши паролей от `make hash` |
 
+### Пароли
+
+Пароли для WGDashboard и AdGuard Home задаются заранее: `make hash` превращает
+пароль в хеш, хеш сохраняется в `vault.yml`. При установке панели сразу
+получают ваш логин (`admin_user`) и пароль, без мастера первого запуска и
+без `admin/admin`. Можно один пароль на оба, лучше разные.
+
+Ansible ничего не спрашивает: vault открывается ключом из `ansible/.vault_pass`,
+вход на сервер по SSH-ключу, sudo без пароля. Исключение: `make init
+ASK_PASS=1`, если провайдер дал только пароль root.
+
 ```bash
 make hash                   # дважды: пароль для WGDashboard и для AdGuard Home
 make vault-encrypt          # зашифровать vault.yml

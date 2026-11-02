@@ -46,5 +46,5 @@
     - name: Next step
       ansible.builtin.debug:
         msg:
-          - "Check the login works: ssh {{ admin_user }}@{{ ansible_host }} sudo -v"
+          - "Check the login works: ssh {{ admin_user }}@{{ ansible_host }} sudo true"
           - "Then: make ssh HOST={{ inventory_hostname }}"

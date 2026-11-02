@@ -68,7 +68,7 @@ make vault-encrypt          # зашифровать vault.yml
 make params HOST=vpn1       # уникальные параметры маскировки для этого сервера
 
 make init HOST=vpn1         # базовая система (под root)
-ssh vpnadmin@<IP> sudo -v   # проверить вход под новым пользователем!
+ssh vpnadmin@<IP> sudo true # проверить вход под новым пользователем!
 make ssh HOST=vpn1          # отключить вход под root и по паролю
 make vpn HOST=vpn1          # AmneziaWG + firewall + WGDashboard
 make dns HOST=vpn1          # AdGuard Home (только для полного варианта)

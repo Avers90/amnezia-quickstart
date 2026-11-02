@@ -98,7 +98,10 @@ all: init ssh vpn dns
 
 panel: check-host
 	@cd $(ANSIBLE_DIR) && \
-	ip=$$(ansible-inventory --host $(HOST) | python3 -c 'import json,sys; print(json.load(sys.stdin)["ansible_host"])') && \
-	user=$$(ansible-inventory --host $(HOST) | python3 -c 'import json,sys; print(json.load(sys.stdin)["admin_user"])') && \
+	args=$$(ansible-inventory --host $(HOST) | python3 -c 'import json, shlex, sys; v = json.load(sys.stdin); \
+		a = ["-p", str(v.get("ansible_port", 22))]; \
+		a += ["-i", v["ansible_ssh_private_key_file"]] if v.get("ansible_ssh_private_key_file") else []; \
+		a += shlex.split(v.get("ansible_ssh_common_args", "")); \
+		a.append(v["admin_user"] + "@" + v["ansible_host"]); print(shlex.join(a))') && \
 	echo "WGDashboard: http://localhost:10086  (Ctrl+C to close the tunnel)" && \
-	ssh -N -L 10086:127.0.0.1:10086 "$$user@$$ip"
+	eval ssh -N -L 10086:127.0.0.1:10086 $$args

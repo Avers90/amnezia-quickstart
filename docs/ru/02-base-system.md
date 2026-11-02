@@ -45,7 +45,7 @@ make init HOST=vpn1 ASK_PASS=1
 ## Проверка: обязательно
 
 ```bash
-ssh vpnadmin@203.0.113.10 sudo -v
+ssh vpnadmin@203.0.113.10 sudo true
 ```
 
 Команда должна пройти без запроса пароля. Если не прошла, **не переходите к

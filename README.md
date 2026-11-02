@@ -1,4 +1,6 @@
-**Русский** | English (скоро)
+<p align="center">
+  🇷🇺 <b>Русский</b> | 🇬🇧 English (скоро)
+</p>
 
 # amnezia-quickstart
 

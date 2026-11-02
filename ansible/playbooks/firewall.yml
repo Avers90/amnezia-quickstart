@@ -1,0 +1,28 @@
+---
+## iptables: SSH + AmneziaWG ports open, everything else closed, NAT for the
+## tunnel, port-scan bans. Rebuilds ALL rules on every run: rules added by
+## hand are lost. make firewall HOST=<host>
+- name: Firewall
+  hosts: awg
+  become: true
+  pre_tasks:
+    ## If the firewall opened a port AmneziaWG does not listen on, every client
+    ## would be cut off and banned as a port scanner. Stop before that.
+    - name: Read AmneziaWG listen port
+      ansible.builtin.command: "awg show {{ amneziawg_interface }} listen-port"
+      register: firewall_awg_listen_port
+      changed_when: false
+      failed_when: false
+      check_mode: false
+
+    - name: Check firewall port matches AmneziaWG listen port
+      ansible.builtin.assert:
+        that:
+          - firewall_awg_listen_port.stdout | int == firewall_wireguard_port_udp | int
+        fail_msg: >-
+          AmneziaWG listens on {{ firewall_awg_listen_port.stdout }}, firewall would
+          open {{ firewall_wireguard_port_udp }}. Set amneziawg_port to the real port.
+        quiet: true
+      when: firewall_awg_listen_port.rc == 0
+  roles:
+    - firewall

@@ -1,0 +1,35 @@
+# --- Personal data: never commit ---------------------------------------------
+# Real inventory (server IPs) and personal settings, only *.example are tracked
+ansible/inventory/hosts.yml
+ansible/inventory/group_vars/all/local.yml
+ansible/inventory/group_vars/all/vault.yml
+# Per-server data (obfuscation parameters, overrides)
+ansible/inventory/host_vars/
+# Vault password
+.vault_pass
+ansible/.vault_pass
+# Keys, certificates, client configs
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*.conf.bak
+/*.conf
+clients/
+peers/
+
+# --- Generated -----------------------------------------------------------------
+ansible/roles/
+ansible/collections/
+ansible/.ansible_cache/
+ansible/.ansible/
+ansible/*.log
+*.retry
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/

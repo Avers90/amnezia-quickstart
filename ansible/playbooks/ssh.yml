@@ -1,0 +1,17 @@
+---
+## SSH hardening: root and password login off. Runs as admin_user, so the
+## play only gets this far if key login and sudo already work.
+- name: Harden SSH
+  hosts: awg
+  become: true
+  pre_tasks:
+    - name: Refuse to run as root
+      ansible.builtin.assert:
+        that:
+          - ansible_user != 'root'
+        fail_msg: >-
+          Run as admin_user (make ssh), not root: after this play root
+          cannot log in and you would be locked out.
+        quiet: true
+  roles:
+    - sshd

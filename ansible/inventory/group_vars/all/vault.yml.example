@@ -1,0 +1,10 @@
+---
+## Secrets. Copy to vault.yml (gitignored), fill in, then encrypt:
+##   make vault-encrypt
+## Hashes are bcrypt, generate with `make hash` (the password is not stored).
+
+## WGDashboard login password (user = admin_user)
+vault_wgdashboard_pass_hash: "CHANGE_ME"
+
+## AdGuard Home login password (user = admin_user). Needed only with awg_local_dns: true
+vault_adguardhome_pass_hash: "CHANGE_ME"

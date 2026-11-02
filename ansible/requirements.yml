@@ -1,0 +1,49 @@
+---
+## Roles are pinned to commits so that a change upstream never alters an
+## install that already works. To update: replace the hash, then `make install`.
+collections:
+  - name: ansible.posix
+  - name: ansible.utils
+  - name: community.general
+
+roles:
+  - src: https://github.com/Avers90/ansible-role-bootstrap.git
+    scm: git
+    version: 3a2d39358c72712754987ad404260c25a35c0539
+    name: bootstrap
+  - src: https://github.com/Avers90/ansible-role-packages.git
+    scm: git
+    version: dced80b725118ccfa6251e0e5c6e0792665d88b8
+    name: packages
+  - src: https://github.com/Avers90/ansible-role-common.git
+    scm: git
+    version: d7b40b33e391c1bc7d87699b07a4c9733e414b85
+    name: common
+  - src: https://github.com/Avers90/ansible-role-users.git
+    scm: git
+    version: da7770f89db6e3aedfd07760bc166ca051172425
+    name: users
+  - src: https://github.com/Avers90/ansible-role-sudo.git
+    scm: git
+    version: ae1eada92d118664a65f3ddb90b4d9f9b08dade9
+    name: sudo
+  - src: https://github.com/Avers90/ansible-role-sshd.git
+    scm: git
+    version: eca0328d6eecce6e3d181ee8aa2565125a0ebf31
+    name: sshd
+  - src: https://github.com/Avers90/ansible-role-amneziawg.git
+    scm: git
+    version: e3dcdf08ea668a8e6bc75efe1a1ba6d8823c37f8
+    name: amneziawg
+  - src: https://github.com/Avers90/ansible-role-wgdashboard.git
+    scm: git
+    version: 332aef15fba3dfb9ceb2645cd129cd5fdc8fd998
+    name: wgdashboard
+  - src: https://github.com/Avers90/ansible-role-adguardhome.git
+    scm: git
+    version: 12842a2a139292ffbb6c82580f7c72a0eb79e30b
+    name: adguardhome
+  - src: https://github.com/Avers90/ansible-role-firewall.git
+    scm: git
+    version: e79d7a9bbfe444ac606f72e109584a0956047a85
+    name: firewall

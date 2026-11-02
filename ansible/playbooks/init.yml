@@ -1,0 +1,50 @@
+---
+## Base system on a fresh VPS. Runs as root: make init HOST=<host>
+## python, apt upgrade, hostname/timezone/sysctl, admin user + sudo.
+- name: Bootstrap python
+  hosts: awg
+  gather_facts: false
+  become: true
+  roles:
+    - bootstrap
+
+- name: Base system
+  hosts: awg
+  become: true
+  vars:
+    packages_upgrade_mode: "{{ init_upgrade_mode | default('full') }}"
+  pre_tasks:
+    - name: Check local.yml is filled in
+      ansible.builtin.assert:
+        that:
+          - admin_user is defined
+          - admin_user != 'root'
+          - admin_ssh_keys is defined
+          - admin_ssh_keys | length > 0
+          - admin_ssh_keys | select('search', 'replace-me') | list | length == 0
+          - admin_ssh_keys | select('match', '^(ssh-|ecdsa-|sk-)') | list | length == admin_ssh_keys | length
+        fail_msg: >-
+          Fill in admin_user and admin_ssh_keys (PUBLIC key, starts with ssh-...)
+          in inventory/group_vars/all/local.yml
+        quiet: true
+  roles:
+    - packages
+    - common
+    - users
+    - sudo
+  post_tasks:
+    - name: Check if a reboot is required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: init_reboot_required
+
+    - name: Reboot into the new kernel
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+      when: init_reboot_required.stat.exists
+
+    - name: Next step
+      ansible.builtin.debug:
+        msg:
+          - "Check the login works: ssh {{ admin_user }}@{{ ansible_host }} sudo -v"
+          - "Then: make ssh HOST={{ inventory_hostname }}"

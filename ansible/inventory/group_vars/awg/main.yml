@@ -1,0 +1,90 @@
+---
+## VPN server settings. Obfuscation parameters are NOT here: every server gets
+## its own set in host_vars/<host>/awg.yml (`make params HOST=<host>`).
+
+## --- AmneziaWG ---------------------------------------------------------------
+amneziawg_interface: "awg0"
+## Tunnel network: server gets .1, clients the rest (/24 = up to 253 clients)
+amneziawg_address: "10.66.0.1/24"
+## Listen port. 443 and 51820 are redirected to it by the firewall (see below)
+amneziawg_port: 27015
+
+## --- Kernel tuning (applied by the common role) -----------------------------
+## nf_conntrack must load before systemd-sysctl, otherwise the
+## net.netfilter.* keys below are silently dropped on every boot.
+common_modules_load:
+  - nf_conntrack
+
+## RAM-dependent values are derived from facts, so they stay right on any VPS size
+sysctl_mem_mb: "{{ ansible_facts['memtotal_mb'] | default(2048) | int }}"
+sysctl_conntrack_max: >-
+  {{ [[ sysctl_mem_mb | int * 64, 65536 ] | max, 1048576 ] | min }}
+sysctl_netdev_backlog: >-
+  {{ [[ sysctl_mem_mb | int * 8, 1000 ] | max, 16384 ] | min }}
+
+common_sysctl:
+  net.ipv4.ip_forward: 1
+  net.ipv4.tcp_congestion_control: bbr
+  net.core.default_qdisc: fq_codel
+  net.ipv4.tcp_slow_start_after_idle: 0
+  net.ipv4.tcp_mtu_probing: 1
+  net.ipv4.tcp_rmem: "4096 87380 16777216"
+  net.ipv4.tcp_wmem: "4096 65536 16777216"
+  net.core.rmem_default: 1048576
+  net.core.wmem_default: 1048576
+  net.core.rmem_max: 16777216
+  net.core.wmem_max: 16777216
+  net.ipv4.udp_rmem_min: 16384
+  net.ipv4.udp_wmem_min: 16384
+  net.core.netdev_max_backlog: "{{ sysctl_netdev_backlog | int }}"
+  net.netfilter.nf_conntrack_max: "{{ sysctl_conntrack_max | int }}"
+  net.netfilter.nf_conntrack_tcp_timeout_established: 86400
+  vm.swappiness: 10
+
+## --- Firewall (iptables) ----------------------------------------------------
+## Also does NAT for the tunnel: without this role clients have no internet.
+firewall_wireguard_enabled: true
+firewall_wireguard_interface: "{{ amneziawg_interface }}"
+firewall_wireguard_network: "{{ amneziawg_address | ansible.utils.ipaddr('network/prefix') }}"
+firewall_wireguard_port_udp: "{{ amneziawg_port }}"
+## Spare entry ports, redirected to amneziawg_port. A client switches by
+## changing only the Endpoint port, e.g. when a carrier drops unusual UDP ports.
+firewall_wireguard_extra_ports_udp: [443, 51820, 27015]
+## TCP MSS clamp: fixes "VPN connected, small pages load, big ones hang"
+## on mobile / PPPoE links
+firewall_wireguard_mss: 1240
+## Only SSH is public. WGDashboard is reached through an SSH tunnel,
+## AdGuard Home through the VPN.
+firewall_public_ports_tcp:
+  - 22
+## Close inbound IPv6 (the rules above are IPv4 only)
+firewall_ipv6_block: true
+## Ban time for port scanners, seconds
+firewall_ban_timeout: 3600
+
+## --- WGDashboard --------------------------------------------------------------
+wgdashboard_wg_backend: amneziawg
+wgdashboard_wg_interface: "{{ amneziawg_interface }}"
+## localhost only, open with: make panel HOST=<host>
+wgdashboard_app_ip: "127.0.0.1"
+wgdashboard_admin_user: "{{ admin_user }}"
+wgdashboard_admin_pass_hash: "{{ vault_wgdashboard_pass_hash }}"
+wgdashboard_peer_global_dns: >-
+  {{ amneziawg_address | ansible.utils.ipaddr('address')
+     if awg_local_dns | default(true) | bool else '1.1.1.1' }}
+## 1376 survives LTE / PPPoE paths and AmneziaWG 2.0 padding (S4)
+wgdashboard_peer_mtu: 1376
+wgdashboard_peer_keep_alive: 25
+wgdashboard_peer_remote_endpoint: "{{ awg_client_endpoint | default(ansible_host) }}"
+
+## --- AdGuard Home (make dns) --------------------------------------------------
+## Listens on the tunnel IP only: reachable from VPN clients, not from the internet
+adguardhome_web_host: "{{ amneziawg_address | ansible.utils.ipaddr('address') }}"
+adguardhome_dns_bind_hosts:
+  - "{{ amneziawg_address | ansible.utils.ipaddr('address') }}"
+adguardhome_admin_user: "{{ admin_user }}"
+adguardhome_admin_pass_hash: "{{ vault_adguardhome_pass_hash }}"
+adguardhome_language: "ru"
+## Allow rules for sites a blocklist breaks, AdGuard syntax:
+# adguardhome_user_rules:
+#   - '@@||example.com^$important'

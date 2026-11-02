@@ -1,0 +1,31 @@
+---
+## Personal settings. Copy to local.yml (gitignored) and edit.
+
+## Admin user created on the server. Root and password login are disabled
+## after `make ssh`, this user (SSH key + sudo) is the only way in.
+admin_user: "vpnadmin"
+
+## Your PUBLIC key(s): contents of ~/.ssh/id_ed25519.pub (never the private one)
+admin_ssh_keys:
+  - "ssh-ed25519 AAAAC3Nza...replace-me... you@laptop"
+
+## Local DNS (AdGuard Home) for VPN clients.
+## true  — clients get DNS = server tunnel IP, run `make dns` before creating peers
+## false — clients get public DNS (1.1.1.1), AdGuard Home is not needed
+awg_local_dns: true
+
+## Address clients connect to (Endpoint in issued configs). Recommended: a
+## domain name, set BEFORE the first client is created. The IP is baked into
+## every config on download; with a domain an IP block or a server move is one
+## A-record change instead of re-issuing every config. Cloudflare: DNS only
+## (grey cloud), the proxy does not pass UDP. docs/ru/04 explains the details.
+## Default: server IP from hosts.yml.
+# awg_client_endpoint: "node1.example.com"
+
+## IPs that are never banned by the firewall and may reach every port.
+## Only static addresses you control (home/office). Empty is fine.
+firewall_whitelist_ips: []
+#  - 198.51.100.7
+
+## Server timezone (role default: Europe/Moscow)
+# common_timezone: "Europe/Moscow"

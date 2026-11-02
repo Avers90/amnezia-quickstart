@@ -1,0 +1,32 @@
+---
+## Shared settings. Personal values live in local.yml and vault.yml next to
+## this file (both gitignored), see the *.example files.
+
+ansible_managed: "Managed by Ansible (DO NOT EDIT MANUALLY)"
+ansible_user: "{{ admin_user }}"
+
+## users / sudo: admin user with key-only login and passwordless sudo
+users_create:
+  - name: "{{ admin_user }}"
+    group: "{{ admin_user }}"
+    groups:
+      - sudo
+    ssh_authorized_keys: "{{ admin_ssh_keys }}"
+
+sudo_users:
+  - name: "{{ admin_user }}"
+    nopasswd: true
+    commands: ALL
+
+## sshd: root and password login off, only admin_user may log in.
+## TCP forwarding stays on: WGDashboard is reached through an SSH tunnel.
+sshd_clean_config_d: true
+sshd_allow_users:
+  - "{{ admin_user }}"
+sshd_allow_tcp_forwarding: "yes"
+
+## packages: some VPS images ship a regional mirror that may be unreachable
+## from the server; the global one always works.
+packages_ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
+packages_install_extra:
+  - make

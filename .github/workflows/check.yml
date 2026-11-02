@@ -1,0 +1,47 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Personal data
+        run: scripts/check-secrets.sh
+
+  ansible:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ansible
+        run: pip install ansible-core netaddr
+      - name: Install roles and collections
+        run: make install
+      - name: Example inventory
+        run: |
+          cp ansible/inventory/hosts.yml.example ansible/inventory/hosts.yml
+          cp ansible/inventory/group_vars/all/local.yml.example ansible/inventory/group_vars/all/local.yml
+          cp ansible/inventory/group_vars/all/vault.yml.example ansible/inventory/group_vars/all/vault.yml
+          echo dummy > ansible/.vault_pass
+      - name: Syntax check
+        working-directory: ansible
+        run: |
+          for p in playbooks/*.yml; do
+            ansible-playbook --syntax-check "$p"
+          done
+      - name: Parameter generator
+        run: python3 scripts/gen-awg-params.py --host vpn1 --seed 1

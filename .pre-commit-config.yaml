@@ -1,0 +1,15 @@
+## pip install pre-commit && pre-commit install
+## Blocks commits with keys, password hashes, personal files and real IPs.
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: check-secrets
+        name: check-secrets (personal data)
+        entry: scripts/check-secrets.sh
+        language: script
+        pass_filenames: true

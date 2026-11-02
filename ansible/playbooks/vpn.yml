@@ -1,0 +1,47 @@
+---
+## VPN: AmneziaWG + firewall (NAT) + WGDashboard. make vpn HOST=<host>
+- name: AmneziaWG
+  hosts: awg
+  become: true
+  pre_tasks:
+    - name: Check obfuscation parameters are this server's own
+      ansible.builtin.assert:
+        that:
+          - amneziawg_h1 | string not in ['1234567891', '1234567892', '1234567893', '1234567894']
+          - amneziawg_h2 | string not in ['1234567891', '1234567892', '1234567893', '1234567894']
+          - amneziawg_h3 | string not in ['1234567891', '1234567892', '1234567893', '1234567894']
+          - amneziawg_h4 | string not in ['1234567891', '1234567892', '1234567893', '1234567894']
+        fail_msg: >-
+          No obfuscation parameters for {{ inventory_hostname }}: role defaults
+          are the same for everyone. Run: make params HOST={{ inventory_hostname }}
+        quiet: true
+
+    - name: Check WGDashboard password is set
+      ansible.builtin.assert:
+        that:
+          - vault_wgdashboard_pass_hash is defined
+          - vault_wgdashboard_pass_hash is match('^\$2[aby]\$')
+        fail_msg: >-
+          vault_wgdashboard_pass_hash is not a bcrypt hash. Run `make hash`
+          and put the result into inventory/group_vars/all/vault.yml
+        quiet: true
+  roles:
+    - amneziawg
+
+- name: Firewall
+  ansible.builtin.import_playbook: firewall.yml
+
+- name: WGDashboard
+  hosts: awg
+  become: true
+  roles:
+    - wgdashboard
+  post_tasks:
+    - name: Next step
+      ansible.builtin.debug:
+        msg:
+          - "Panel: make panel HOST={{ inventory_hostname }}, then open http://localhost:10086"
+          - "Login: {{ admin_user }} + the password you hashed with make hash"
+          - >-
+            {{ 'Local DNS is on: run make dns HOST=' ~ inventory_hostname ~ ' BEFORE creating clients'
+               if awg_local_dns | default(true) | bool else 'Clients use DNS 1.1.1.1' }}

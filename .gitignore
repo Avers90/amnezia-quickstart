@@ -7,7 +7,6 @@ ansible/inventory/group_vars/all/vault.yml
 ansible/inventory/host_vars/
 # Vault password
 .vault_pass
-ansible/.vault_pass
 # Keys, certificates, client configs
 *.key
 *.pem

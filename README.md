@@ -63,7 +63,7 @@ Ansible ничего не спрашивает: vault открывается к�
 ASK_PASS=1`, если провайдер дал только пароль root.
 
 ```bash
-make hash                   # дважды: пароль для WGDashboard и для AdGuard Home
+make hash                   # пароль WGDashboard; второй раз — для AdGuard Home (полный вариант)
 make vault-encrypt          # зашифровать vault.yml
 make params HOST=vpn1       # уникальные параметры маскировки для этого сервера
 

@@ -58,7 +58,7 @@ ansible --version
 ```bash
 git clone https://github.com/Avers90/amnezia-quickstart.git
 cd amnezia-quickstart
-make install    # роли и коллекции Ansible → ansible/roles/
+make install    # роли → ansible/roles/, коллекции → ~/.ansible/
 make setup      # личные файлы из примеров + пароль от vault
 ```
 

@@ -14,12 +14,11 @@ admin_ssh_keys:
 ## false — clients get public DNS (1.1.1.1), AdGuard Home is not needed
 awg_local_dns: true
 
-## Address clients connect to (Endpoint in issued configs). Recommended: a
-## domain name, set BEFORE the first client is created. The IP is baked into
-## every config on download; with a domain an IP block or a server move is one
-## A-record change instead of re-issuing every config. Cloudflare: DNS only
-## (grey cloud), the proxy does not pass UDP. docs/ru/04 explains the details.
-## Default: server IP from hosts.yml.
+## Optional. Address clients connect to (Endpoint in issued configs).
+## Default: server IP from hosts.yml, works out of the box.
+## A domain lets you change the server IP without re-issuing configs
+## (docs/ru/04). Decide before the first client is created.
+## Cloudflare: DNS only (grey cloud), the proxy does not pass UDP.
 # awg_client_endpoint: "node1.example.com"
 
 ## IPs that are never banned by the firewall and may reach every port.

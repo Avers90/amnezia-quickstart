@@ -48,7 +48,7 @@ make setup                  # создаёт личные файлы настр�
 | Файл | Что вписать |
 |---|---|
 | `ansible/inventory/hosts.yml` | IP сервера |
-| `ansible/inventory/group_vars/all/local.yml` | имя пользователя, **публичный** SSH-ключ, нужен ли свой DNS, домен для клиентов ([зачем](docs/ru/04-amneziawg-wgdashboard.md#адрес-сервера-в-конфигах-домен-а-не-ip)) |
+| `ansible/inventory/group_vars/all/local.yml` | имя пользователя, **публичный** SSH-ключ, нужен ли свой DNS, домен для клиентов — по желанию ([зачем](docs/ru/04-amneziawg-wgdashboard.md#домен-вместо-ip-по-желанию)) |
 | `ansible/inventory/group_vars/all/vault.yml` | хеши паролей от `make hash` |
 
 ### Пароли

@@ -14,7 +14,7 @@
 
 ```bash
 make hash
-make vault-edit     # vault_adguardhome_pass_hash: "$2b$12$..."
+make vault-edit     # vault_adguardhome_pass_hash: "$2y$12$..."
 ```
 
 ```bash

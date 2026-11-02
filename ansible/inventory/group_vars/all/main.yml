@@ -28,5 +28,3 @@ sshd_allow_tcp_forwarding: "yes"
 ## packages: some VPS images ship a regional mirror that may be unreachable
 ## from the server; the global one always works.
 packages_ubuntu_mirror: "http://archive.ubuntu.com/ubuntu/"
-packages_install_extra:
-  - make

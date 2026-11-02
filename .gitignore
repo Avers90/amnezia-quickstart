@@ -16,14 +16,11 @@ ansible/.vault_pass
 id_rsa*
 id_ed25519*
 id_ecdsa*
+*.conf
 *.conf.bak
-/*.conf
-clients/
-peers/
 
 # --- Generated -----------------------------------------------------------------
 ansible/roles/
-ansible/collections/
 ansible/.ansible_cache/
 ansible/.ansible/
 ansible/*.log

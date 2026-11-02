@@ -27,7 +27,8 @@ ssh-keygen -t ed25519 -C "vpn"
 
 ## Ansible
 
-Нужны Ansible (2.15+), `make`, `git`, Python 3 и модуль `netaddr`.
+Нужны Ansible (2.15+), `make`, `git`, Python 3, модуль `netaddr` и
+`htpasswd` (для `make hash`; на macOS уже есть).
 
 **macOS:**
 
@@ -38,7 +39,7 @@ brew install ansible
 **Ubuntu / Debian / Windows + WSL:**
 
 ```bash
-sudo apt install -y pipx make git
+sudo apt install -y pipx make git apache2-utils
 pipx install --include-deps ansible
 pipx inject ansible netaddr
 pipx ensurepath   # потом перезапустить терминал

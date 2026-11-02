@@ -8,9 +8,9 @@
 Что получится:
 
 - **AmneziaWG**: WireGuard с маскировкой трафика, которую сложнее заблокировать по DPI
-- **WGDashboard**: веб-панель, где вы создаёте клиентов и скачиваете конфиги или QR-коды
+- **[WGDashboard](https://github.com/WGDashboard/WGDashboard)**: веб-панель, где вы создаёте клиентов и скачиваете конфиги или QR-коды
 - **Firewall** (iptables): открыты только SSH и порт VPN, сканеры портов автоматически банятся
-- **AdGuard Home** (по желанию): свой DNS для клиентов VPN с блокировкой рекламы и трекеров
+- **[AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)** (по желанию): свой DNS для клиентов VPN с блокировкой рекламы и трекеров
 - Защищённый вход: отдельный пользователь, только SSH-ключ, root отключён
 
 Всё ставится ролями из [Avers90/ansible-role-*](https://github.com/Avers90?tab=repositories&q=ansible-role).

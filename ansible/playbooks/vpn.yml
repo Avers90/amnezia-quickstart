@@ -25,26 +25,8 @@
           vault_wgdashboard_pass_hash is not a bcrypt hash. Run `make hash`
           and put the result into inventory/group_vars/all/vault.yml
         quiet: true
-
-    - name: Read AmneziaWG config checksum before
-      ansible.builtin.stat:
-        path: "/etc/amnezia/amneziawg/{{ amneziawg_interface }}.conf"
-      register: vpn_awg_conf_before
   roles:
     - amneziawg
-  post_tasks:
-    - name: Read AmneziaWG config checksum after
-      ansible.builtin.stat:
-        path: "/etc/amnezia/amneziawg/{{ amneziawg_interface }}.conf"
-      register: vpn_awg_conf_after
-
-    ## WGDashboard caches the interface params and keeps handing out configs
-    ## with the old ones until it is restarted.
-    - name: Remember whether the AmneziaWG config changed
-      ansible.builtin.set_fact:
-        vpn_awg_conf_changed: >-
-          {{ vpn_awg_conf_before.stat.exists | default(false)
-             and vpn_awg_conf_before.stat.checksum | default('') != vpn_awg_conf_after.stat.checksum | default('') }}
 
 - name: Firewall
   ansible.builtin.import_playbook: firewall.yml
@@ -55,12 +37,6 @@
   roles:
     - wgdashboard
   post_tasks:
-    - name: Restart WGDashboard to pick up new AmneziaWG parameters
-      ansible.builtin.systemd_service:
-        name: wg-dashboard
-        state: restarted
-      when: vpn_awg_conf_changed | default(false) | bool
-
     - name: Next step
       ansible.builtin.debug:
         msg:

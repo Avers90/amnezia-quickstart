@@ -20,8 +20,10 @@ Public repository. Anything committed here is visible to everyone.
 ## Pitfalls found in testing
 
 - WGDashboard caches the interface params: after `awg.yml` changes it keeps
-  issuing configs with the old ones until `wg-dashboard` restarts. `vpn.yml`
-  does that restart (checksum of `awg0.conf` before/after the role). Keep it.
+  issuing configs with the old ones until `wg-dashboard` restarts. The
+  `amneziawg` role does that restart itself (handler +
+  `amneziawg_dependent_services`, since role commit `2844f28`); do not pin an
+  older commit.
 - The `amneziawg` role never rewrites `awg0.conf` while it has peers, it only
   prints `WARNING: [Interface] params differ`. Changing params = delete every
   peer first (documented in `docs/ru/04`).

@@ -33,7 +33,7 @@ roles:
     name: sshd
   - src: https://github.com/Avers90/ansible-role-amneziawg.git
     scm: git
-    version: e3dcdf08ea668a8e6bc75efe1a1ba6d8823c37f8
+    version: 2844f28d3ab8c217d1c77e29e96d3859d50d56f6
     name: amneziawg
   - src: https://github.com/Avers90/ansible-role-wgdashboard.git
     scm: git

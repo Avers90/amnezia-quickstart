@@ -4,11 +4,16 @@
 
 Подходит любое из двух:
 
-| Приложение | Платформы | Конфиг 2.0 (по умолчанию) |
-|---|---|---|
-| [Amnezia VPN](https://amnezia.org) | Windows, macOS, Linux, Android, iOS | с версии 4.8.12.7 |
-| [AmneziaWG](https://github.com/amnezia-vpn) (лёгкий клиент) | Windows | с версии 2.0.0 |
-| AmneziaWG (лёгкий клиент) | Android, iOS, macOS | актуальная версия из магазина приложений |
+| Приложение | Платформы | Конфиг 2.0 (по умолчанию) | Где взять |
+|---|---|---|---|
+| Amnezia VPN | Windows, macOS, Linux, Android, iOS | с версии 4.8.12.7 | [amnezia.org](https://amnezia.org) |
+| AmneziaWG (лёгкий клиент) | Windows | с версии 2.0.0 | [GitHub](https://github.com/amnezia-vpn/amneziawg-windows-client/releases) |
+| AmneziaWG (лёгкий клиент) | Android | актуальная | [Google Play](https://play.google.com/store/apps/details?id=org.amnezia.awg) · [GitHub](https://github.com/amnezia-vpn/amneziawg-android/releases) |
+| AmneziaWG (лёгкий клиент) | iOS, macOS | актуальная | [App Store](https://apps.apple.com/app/amneziawg/id6478942365) |
+
+AmneziaWG для iOS есть и в российском App Store, Amnezia VPN там нет
+(данные на 15 октября 2026). На iPhone с российским аккаунтом берите
+AmneziaWG.
 
 Обычный WireGuard **не подойдёт**: он не понимает параметры маскировки.
 

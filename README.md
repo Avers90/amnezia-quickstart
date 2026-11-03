@@ -33,11 +33,11 @@ Ansible ставит всё сам, вы правите пару файлов с
 
 ## Что получится
 
-- **AmneziaWG**: WireGuard с маскировкой трафика, которую сложнее заблокировать по DPI
+- **[AmneziaWG](https://github.com/amnezia-vpn/amneziawg-linux-kernel-module)**: WireGuard с маскировкой трафика, которую сложнее заблокировать по DPI
 - **[WGDashboard](https://github.com/WGDashboard/WGDashboard)**: веб-панель, где вы создаёте клиентов и скачиваете конфиги или QR-коды
-- **Firewall** (iptables): открыты только SSH и порт VPN, сканеры портов автоматически банятся
+- **[Firewall](https://github.com/Avers90/ansible-role-firewall)** (iptables): открыты только SSH и порт VPN, сканеры портов автоматически банятся
 - **[AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)** (по желанию): свой DNS для клиентов VPN с блокировкой рекламы и трекеров
-- **Защищённый вход**: отдельный пользователь, только SSH-ключ, root отключён
+- **[Защищённый вход](https://github.com/Avers90/ansible-role-sshd)**: отдельный пользователь, только SSH-ключ, root отключён
 
 Всё ставится ролями из [Avers90/ansible-role-*](https://github.com/Avers90?tab=repositories&q=ansible-role).
 Проверено на Ubuntu 24.04 (arm64): от 1 vCPU и 1 ГБ RAM без swap.
@@ -144,11 +144,15 @@ ASK_PASS=1`, если провайдер дал только пароль root.
 Обычный WireGuard не подойдёт: нужен клиент с поддержкой AmneziaWG. По
 умолчанию сервер выдаёт конфиги версии **2.0**.
 
-| Приложение | Платформы | Конфиг 2.0 |
-|---|---|---|
-| [Amnezia VPN](https://amnezia.org) | Windows, macOS, Linux, Android, iOS | с версии 4.8.12.7 |
-| [AmneziaWG](https://github.com/amnezia-vpn/amneziawg-windows-client/releases) | Windows | с версии 2.0.0 |
-| AmneziaWG | Android, iOS, macOS | актуальная версия из магазина приложений |
+| Приложение | Платформы | Конфиг 2.0 | Где взять |
+|---|---|---|---|
+| Amnezia VPN | Windows, macOS, Linux, Android, iOS | с версии 4.8.12.7 | [amnezia.org](https://amnezia.org) |
+| AmneziaWG | Windows | с версии 2.0.0 | [GitHub](https://github.com/amnezia-vpn/amneziawg-windows-client/releases) |
+| AmneziaWG | Android | актуальная | [Google Play](https://play.google.com/store/apps/details?id=org.amnezia.awg) · [GitHub](https://github.com/amnezia-vpn/amneziawg-android/releases) |
+| AmneziaWG | iOS, macOS | актуальная | [App Store](https://apps.apple.com/app/amneziawg/id6478942365) |
+
+AmneziaWG для iOS есть и в российском App Store, Amnezia VPN там нет
+(данные на 15 октября 2026).
 
 > [!TIP]
 > Старое приложение с конфигом 2.0 просто не подключится, без понятной

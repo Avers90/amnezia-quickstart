@@ -72,8 +72,11 @@ make setup      # личные файлы из примеров + пароль �
 | `ansible/inventory/group_vars/all/vault.yml` | хеши паролей (будет зашифрован) |
 | `ansible/.vault_pass` | случайный пароль, которым шифруется `vault.yml` |
 
-Все четыре в `.gitignore`. **Сохраните содержимое `ansible/.vault_pass` в
-менеджер паролей**: без него `vault.yml` не расшифровать.
+Все четыре в `.gitignore`.
+
+> [!WARNING]
+> Сохраните содержимое `ansible/.vault_pass` в менеджер паролей: без него
+> `vault.yml` не расшифровать.
 
 ## Список серверов
 

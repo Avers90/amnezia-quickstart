@@ -17,7 +17,7 @@ roles:
     name: packages
   - src: https://github.com/Avers90/ansible-role-common.git
     scm: git
-    version: d7b40b33e391c1bc7d87699b07a4c9733e414b85
+    version: 0c11313ffb9aae594198a73e42820cfac5c68697
     name: common
   - src: https://github.com/Avers90/ansible-role-users.git
     scm: git

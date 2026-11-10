@@ -35,7 +35,7 @@ Ansible ставит всё сам, вы правите пару файлов с
 
 - **[AmneziaWG](https://github.com/amnezia-vpn/amneziawg-linux-kernel-module)**: WireGuard с маскировкой трафика, которую сложнее заблокировать по DPI
 - **[WGDashboard](https://github.com/WGDashboard/WGDashboard)**: веб-панель, где вы создаёте клиентов и скачиваете конфиги или QR-коды
-- **[Firewall](https://github.com/Avers90/ansible-role-firewall)** (iptables): открыты только SSH и порт VPN, сканеры портов автоматически банятся
+- **[Firewall](https://github.com/Avers90/ansible-role-firewall)** (iptables): открыты только SSH и порт VPN, частые подключения к SSH с одного IP режутся
 - **[AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)** (по желанию): свой DNS для клиентов VPN с блокировкой рекламы и трекеров
 - **[Защищённый вход](https://github.com/Avers90/ansible-role-sshd)**: отдельный пользователь, только SSH-ключ, root отключён
 
@@ -103,7 +103,7 @@ make panel HOST=vpn1        # открыть панель: http://localhost:1008
 |---|---|
 | `make init` | `apt upgrade` (по умолчанию с ядром) и перезагрузка, если обновилось ядро; зеркало Ubuntu → `archive.ubuntu.com`; набор утилит (`curl`, `vim`, `jq`, `btop`, `auditd`, `iptables-persistent` и др.); имя хоста, часовой пояс, локаль; приветствие при входе (`/etc/profile.d`); свой `/etc/pam.d/sshd` (оригинал сохраняется); настройки ядра в `/etc/sysctl.d/99-zz-ansible.conf` (BBR, буферы, conntrack, форвардинг); пользователь `admin_user` с ключом и sudo без пароля (`/etc/sudoers.d/<user>`) |
 | `make ssh` | новый `/etc/ssh/sshd_config` (оригинал и `sshd_config.d` сохраняются в `*.orig`): вход только по ключу, без root, только `admin_user`, современная криптография |
-| `make vpn` | PPA Amnezia и модуль ядра AmneziaWG (DKMS); `/etc/amnezia/amneziawg/awg0.conf` и ключи сервера; сервис `awg-quick@awg0`. Правила iptables и ipset (`/usr/local/sbin/iptables-rules.sh`, сохраняются через `netfilter-persistent`), логи банов в `/var/log/ipset/`. Node.js 22 из NodeSource, WGDashboard в `/opt/WGDashboard`, сервис `wg-dashboard` |
+| `make vpn` | PPA Amnezia и модуль ядра AmneziaWG (DKMS); `/etc/amnezia/amneziawg/awg0.conf` и ключи сервера; сервис `awg-quick@awg0`. Правила iptables и ipset (`/usr/local/sbin/iptables-rules.sh`, сохраняются через `netfilter-persistent`). Node.js 22 из NodeSource, WGDashboard в `/opt/WGDashboard`, сервис `wg-dashboard` |
 | `make dns` | AdGuard Home в `/opt/AdGuardHome`, сервис `AdGuardHome`; `systemd-resolved` отключается, `/etc/resolv.conf` становится статическим (оригинал сохраняется) |
 
 Повторный запуск ничего не меняет, если вы не меняли настройки. Посмотреть,

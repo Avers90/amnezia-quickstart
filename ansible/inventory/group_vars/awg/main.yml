@@ -59,8 +59,10 @@ firewall_public_ports_tcp:
   - 22
 ## Close inbound IPv6 (the rules above are IPv4 only)
 firewall_ipv6_block: true
-## Ban time for port scanners, seconds
-firewall_ban_timeout: 3600
+## SSH: new connections from one IP above 6 per minute (burst 10) are
+## dropped until it slows down. No ban list; whitelisted IPs are not limited.
+firewall_ssh_ratelimit: "6/min"
+firewall_ssh_burst: 10
 
 ## --- WGDashboard --------------------------------------------------------------
 wgdashboard_wg_backend: amneziawg

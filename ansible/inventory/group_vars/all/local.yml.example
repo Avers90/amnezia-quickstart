@@ -21,7 +21,7 @@ awg_local_dns: true
 ## Cloudflare: DNS only (grey cloud), the proxy does not pass UDP.
 # awg_client_endpoint: "node1.example.com"
 
-## IPs that are never banned by the firewall and may reach every port.
+## IPs the firewall accepts on every port, without the SSH rate limit.
 ## Only static addresses you control (home/office). Empty is fine.
 firewall_whitelist_ips: []
 #  - 198.51.100.7

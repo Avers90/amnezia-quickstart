@@ -45,5 +45,5 @@ roles:
     name: adguardhome
   - src: https://github.com/Avers90/ansible-role-firewall.git
     scm: git
-    version: e79d7a9bbfe444ac606f72e109584a0956047a85
+    version: 6f411578baadde6579b635eb7b2cb2287ad397d2
     name: firewall

@@ -29,8 +29,10 @@ Public repository. Anything committed here is visible to everyone.
   peer first (documented in `docs/ru/04`).
 - Login check is `ssh <user>@<ip> sudo true`, not `sudo -v`: `-v` asks for a
   password because the user is also in the `sudo` group.
-- Firewall bans only affect closed ports: public ports (SSH, AWG) are accepted
-  before the ban check. Never document "banned = SSH is cut off".
+- The firewall has no ban lists (removed in role `5f3e6a3`): closed ports are
+  just dropped. The only limit is the SSH rate limit on tcp/22 (6/min per IP),
+  after the whitelist; VPN ports are never limited. Never document "banned =
+  SSH / VPN is cut off".
 - Changing `awg_client_endpoint` or `awg_local_dns` is picked up by the role
   (it restarts the panel). Old peers keep their DNS, Endpoint follows the
   setting on re-download.
@@ -52,7 +54,7 @@ Public repository. Anything committed here is visible to everyone.
 - Client test: install `amneziawg` from the PPA on the client VM and run the
   full-tunnel test detached (`setsid nohup`), it cuts the SSH session.
 - Tested so far: 1 vCPU / 1 GB without swap, configs 1.0 / 1.5 / 2.0, ports
-  27015 / 443 / 51820, `CHECK=1`, reboot, bans, re-runs with `changed=0`.
+  27015 / 443 / 51820, `CHECK=1`, reboot, re-runs with `changed=0`.
   Not tested: amd64, a phone on a mobile carrier.
 - Delete the VMs and every test file afterwards.
 
